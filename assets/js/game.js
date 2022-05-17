@@ -1,4 +1,15 @@
-console.log("NEW GAME START");
+// Game States
+// PLAYING - player is actively fighting
+// WIN - player has defeated or skipped all enemies
+// LOSE - player has run out of health
+
+// iterate over array of enemies to perform multiple fights
+// for each enemy, run a loop of attacks
+    // calculate enemy hp and display message
+        // if 0, go to the next enemy
+            // if there is no next enemy, end the game
+    // calculate player hp and display message
+        // if 0, end the game
 
 // let playerName = window.prompt("What is your robot's name?");
 let playerName = "Rob";
@@ -6,13 +17,13 @@ let playerHealth = 100;
 let playerAttack = 10;
 let playerMoney = 10;
 
-let enemyName = "Roborto";
+let enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 let enemyHealth = 50;
 let enemyAttack = 12;
 
-window.alert("Welcome to Robot Gladiators!");
+// window.alert("Welcome to Robot Gladiators!");
 
-let fight = function() {
+let fight = function(enemyName) {
     let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.");
     // quickly make sure the prompt input is valid
     promptFight = promptFight.toLowerCase();
@@ -54,4 +65,6 @@ let fight = function() {
     }
 };
 
-fight();
+for (let i = 0; i < enemyNames.length; i++) {
+    fight(enemyNames[i])
+};
