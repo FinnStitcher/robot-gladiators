@@ -27,14 +27,13 @@ let enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 let enemyHealth = 50;
 let enemyAttack = 12;
 
-// window.alert("Welcome to Robot Gladiators!");
-
 let fight = function(enemyName) {
     let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.");
     promptFight = promptFight.toLowerCase();
     
     if (promptFight === 'fight') {
-        // logical OR and logical AND both work, i find
+        window.alert(`${enemyName} enters the ring!`);
+
         while (enemyHealth > 0 && playerHealth > 0) {
             // subtract playerAttack from enemyHealth
             // display message describing what happened
@@ -73,8 +72,18 @@ let fight = function(enemyName) {
     };
 };
 
+window.alert("Welcome to Robot Gladiators!");
+
 for (let i = 0; i < enemyNames.length; i++) {
-    let pickedEnemyName = enemyNames[i];
-    enemyHealth = 50;
-    fight(pickedEnemyName);
+    if (playerHealth > 0) {
+        window.alert(`Begin Round ${i + 1}!`);
+
+        let pickedEnemyName = enemyNames[i];
+        enemyHealth = 50;
+        fight(pickedEnemyName);
+    }
+    else {
+        window.alert("Game Over!");
+        break;
+    };
 };
