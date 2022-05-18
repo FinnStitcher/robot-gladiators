@@ -31,41 +31,37 @@ let enemyAttack = 12;
 
 let fight = function(enemyName) {
     let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.");
-    // make sure the input is valid
     promptFight = promptFight.toLowerCase();
     
     if (promptFight === 'fight') {
-        while (enemyHealth > 0) {
-            // subtract playerAttack from enemyHealth, display message describing what happened
+        // logical OR and logical AND both work, i find
+        while (enemyHealth > 0 && playerHealth > 0) {
+            // subtract playerAttack from enemyHealth
+            // display message describing what happened
+            // check if enemy is defeated and exit fight() if yes
             enemyHealth -= playerAttack;
-            window.alert(`${playerName} attacked ${enemyName}! ${enemyName} now has ${enemyHealth} hit points remaining!`);      
+            window.alert(`${playerName} attacked ${enemyName}! ${enemyName} now has ${enemyHealth} hit points remaining!`);
+            if (enemyHealth <= 0) {
+                window.alert(`${enemyName} crumpled. Congratulations! You have won this battle!`);
+                break;
+            };
             
-            // subtrack enemyAttack from playerHealth, display message describing what happened
+            // same as above but the player is attacked
             playerHealth -= enemyAttack;
             window.alert(`${enemyName} attacked ${playerName}! ${playerName} now has ${playerHealth} hit points remaining!`);
+            if (playerHealth <= 0) {
+                window.alert(`${playerName} crumpled. Woe betide, you have lost this battle.`);
+                break;
+            };
         };
-        window.alert(`${enemyName} crumpled. Congratulations! You have won this battle!`);
-        // player deals damage to enemy
-        // alert describing the damage is displayed
-
-        // if the enemy has zero health another alert is displayed
-        // if (enemyHealth === 0) {
-        //     window.alert(`${enemyName} crumpled. Congratulations! You have won this battle!`)
-        // };
-
-        // // enemy deals damage to player with the same system
-        // playerHealth -= enemyAttack;
-        // window.alert(`${enemyName} attacked ${playerName}! ${playerName} now has ${playerHealth} hit points remaining!`);
-        // if (playerHealth === 0) {
-        //     window.alert(`${playerName} crumpled. Woe betide, you have lost this battle.`)
-        // };
     }
     else if (promptFight === 'skip') {
         let confirmSkip = window.confirm("Are you sure? If you skip, you'll lose 2 dollars, but you may be better equipped for the next battle.");
-
         if (confirmSkip) {
             playerMoney -= 2;
             window.alert(`You have chosen to skip the fight! After paying the toll, you have ${playerMoney} dollars left.`);
+            // no break is needed here. the if statement is finished, which finishes this if block, which finishes the fight() function
+            // in other words it goes straight to the next loop
         }
         else {
             fight();
