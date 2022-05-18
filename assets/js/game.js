@@ -16,10 +16,36 @@
     // calculate player hp and display message
         // if 0, end the game
 
+/* ok so we need to reconfigure all this shit so its not all in one huge convoluted function
+first lets outline game progression
+- game loads up and displays welcome message
+- begin rounds loop
+    - fight/skip message
+        - if fight: run battle loop
+            - after each subtraction, confirm if someone has lost
+                - if enemy has lost, end battle loop, go to shop (best if shop is a different function i think?)
+                - if player has lost, end battle loop, skip shop loop, display game over/restart
+        - if skip: confirm and subtract penalty
+    - after round, display shop message
+        - if refill: set health to default, subtract money, go to next round
+        - if upgrade: increase attack, subtract money, go to next round
+        - if leave: go to next round
+- after running out of enemies, display game over/restart 
+
+so how many functions should we have...
+im thinking
+- general for loop
+    - pulling the progression selection into its own function might be good OR too complicated
+    - fight()
+        - while loop
+    - skip()
+    - shop()
+- gameOver() */
+
 // let playerName = window.prompt("What is your robot's name?");
 // ^ commented out for easier testing
 let playerName = "Rob";
-let playerHealth = 100;
+let playerHealth = 10;
 let playerAttack = 10;
 let playerMoney = 10;
 
@@ -72,18 +98,45 @@ let fight = function(enemyName) {
     };
 };
 
-window.alert("Welcome to Robot Gladiators!");
+let startGame = function() {
+    window.alert("Welcome to Robot Gladiators!");
 
-for (let i = 0; i < enemyNames.length; i++) {
+    playerHealth = 0;
+    playerAttack = 10;
+    playerMoney = 10;
+
+    for (let i = 0; i < enemyNames.length; i++) {
+        if (playerHealth > 0) {
+            window.alert(`Begin Round ${i + 1}!`);
+
+            let currentEnemyName = enemyNames[i];
+            enemyHealth = 50;
+            fight(currentEnemyName);
+        }
+        else {
+            break;
+            // break kicks us out of the for loop
+        }
+    };
+
+    endGame();
+};
+
+let endGame = function() {
     if (playerHealth > 0) {
-        window.alert(`Begin Round ${i + 1}!`);
-
-        let pickedEnemyName = enemyNames[i];
-        enemyHealth = 50;
-        fight(pickedEnemyName);
+        window.alert(`Great job, you survived Robot Gladiators! Your final score was ${playerMoney}.`)
     }
     else {
-        window.alert("Game Over!");
-        break;
+        window.alert(`Game over! You lost your robot in battle. Your final score was ${playerMoney}.`)
+    };
+
+    let playAgainConfirm = window.confirm("Would you like to play again?");
+    if (playAgainConfirm) {
+        startGame();
+    }
+    else {
+        window.alert("Thanks for playing! Come back soon!");
     };
 };
+
+startGame();
