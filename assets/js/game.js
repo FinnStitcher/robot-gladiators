@@ -45,7 +45,7 @@ im thinking
 // let playerName = window.prompt("What is your robot's name?");
 // ^ commented out for easier testing
 let playerName = "Rob";
-let playerHealth = 10;
+let playerHealth = 50;
 let playerAttack = 10;
 let playerMoney = 10;
 
@@ -98,10 +98,47 @@ let fight = function(enemyName) {
     };
 };
 
+let shop = function() {
+    let shopOptionPrompt = window.prompt("Would you like to refill your health, upgrade your attack, or leave the store? Type 'refill', 'upgrade', or 'leave' to make your choice.");
+    shopOptionPrompt = shopOptionPrompt.toLowerCase();
+
+    switch (shopOptionPrompt) {
+        case "refill":
+            if (playerMoney >= 5) {
+                playerHealth += 20;
+                playerMoney -= 5;
+                window.alert("You paid 5 dollars to refill your health by 20 points.");
+                window.alert(`You now have ${playerMoney} dollars and ${playerHealth} health.`);                
+            }
+            else {
+                window.alert("You don't have enough money!");
+            };
+            break;
+        case "upgrade":
+            if (playerMoney >= 5) {
+                playerAttack += 5;
+                playerMoney -= 5;
+                window.alert("You paid 5 dollars to upgrade your attack by 5 points.");
+                window.alert(`You now have ${playerMoney} dollars and ${playerAttack} attack points.`);                
+            }
+            else {
+                window.alert("You don't have enough money!");
+            };
+            break;
+        case "leave":
+            window.alert("You left the store.");
+            break;
+        default:
+            window.alert("Please pick a valid option!");
+            shop();
+            break;
+    }
+}
+
 let startGame = function() {
     window.alert("Welcome to Robot Gladiators!");
 
-    playerHealth = 0;
+    playerHealth = 50;
     playerAttack = 10;
     playerMoney = 10;
 
@@ -112,6 +149,13 @@ let startGame = function() {
             let currentEnemyName = enemyNames[i];
             enemyHealth = 50;
             fight(currentEnemyName);
+            if (playerHealth > 0 && i < enemyNames.length - 1) {
+                let storeConfirm = window.confirm("The fight is over; visit the store before the next round?");
+
+                if (storeConfirm) {
+                    shop();
+                };
+            };
         }
         else {
             break;
