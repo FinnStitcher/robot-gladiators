@@ -1,21 +1,3 @@
-// Game States
-// PLAYING - player is actively fighting
-// WIN - player has defeated or skipped all enemies
-// LOSE - player has run out of health
-
-// declare global variables
-// use a for loop to iterate over array of enemies to perform multiple fights
-// before each fight, ask the player to fight or skip
-    // if fight: continue
-    // if skip: subtract 2 dollars, and go to the next iteration of the loop
-// for each enemy, run a loop of attacks
-    // on each iteration:
-    // calculate enemy hp and display message
-        // if 0, go to the next enemy
-            // if there is no next enemy, end the game
-    // calculate player hp and display message
-        // if 0, end the game
-
 /* ok so we need to reconfigure all this shit so its not all in one huge convoluted function
 first lets outline game progression
 - game loads up and displays welcome message
@@ -43,7 +25,7 @@ im thinking
 - gameOver() */
 
 var playerInfo = {
-    name: "Rocket", // window.prompt("What is your robot's name?"),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
@@ -89,16 +71,32 @@ var enemyInfo = [
     }
 ];
 
-// we're using this one a lot so i think it would be best to just let it get hoisted
-function randomNumber (min, max) {
+
+/* HOIST THESE */
+
+function randomNumber(min, max) {
     let value = Math.floor(Math.random() * (max - min + 1)) + min;
     // dunno why we don't use Math.ceiling here, since i think it could achieve the same result... we would have to push the minimum down by one, though, so i guess it makes no difference
     return value;
 };
 
+function getPlayerName() {
+    let name = "";
+
+    while (name === "" || name === null) {
+        name = window.prompt("What is your robot's name?");
+
+        if (name === "" || name === null) {
+            window.alert("Please enter a name!");
+        };
+    };
+};
+
+/* END HOIST THESE */
+
+
 let fight = function(enemy) {
-    let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.");
-    promptFight = promptFight.toLowerCase();
+    let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.").toLowerCase();
     
     if (promptFight === 'fight') {
         window.alert(`${enemy.name} enters the ring!`);
@@ -144,8 +142,7 @@ let fight = function(enemy) {
 };
 
 let shop = function() {
-    let shopOptionPrompt = window.prompt("Would you like to refill your health, upgrade your attack, or leave the store? Type 'refill', 'upgrade', or 'leave' to make your choice.");
-    shopOptionPrompt = shopOptionPrompt.toLowerCase();
+    let shopOptionPrompt = window.prompt("Would you like to refill your health, upgrade your attack, or leave the store? Type 'refill', 'upgrade', or 'leave' to make your choice.").toLowerCase();
 
     switch (shopOptionPrompt) {
         case "refill":
