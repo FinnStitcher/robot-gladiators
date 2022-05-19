@@ -50,8 +50,17 @@ let playerAttack = 10;
 let playerMoney = 10;
 
 let enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
-let enemyHealth = 50;
+let enemyHealth = Math.floor(Math.random() * 21) + 40;
+    // Math.random * 21 = random number between 0 and 21, not including 21
+    // Math.floor = round down the result of that^ randomization, so we get a whole number from 0 to 20
+    // then add 40 to that, so we get 40 to 60
 let enemyAttack = 12;
+
+let randomNumber = function(min, max) {
+    let value = Math.floor(Math.random() * (max - min + 1)) + min;
+    // dunno why we don't use Math.ceiling here, since i think it could achieve the same result... we would have to push the minimum down by one, though, so i guess it makes no difference
+    return value;
+};
 
 let fight = function(enemyName) {
     let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.");
@@ -61,10 +70,11 @@ let fight = function(enemyName) {
         window.alert(`${enemyName} enters the ring!`);
 
         while (enemyHealth > 0 && playerHealth > 0) {
-            // subtract playerAttack from enemyHealth
-            // display message describing what happened
-            // check if enemy is defeated and exit fight() if yes
-            enemyHealth -= playerAttack;
+            // pick a random number for the damage done to the enemy
+            let damageToEnemy = randomNumber(playerAttack - 3, playerAttack);
+            // subtract that damage from enemyHealth, making sure it doesn't go negative
+            enemyHealth = Math.max(0, enemyHealth - damageToEnemy);
+            // popup describes what happened
             window.alert(`${playerName} attacked ${enemyName}! ${enemyName} now has ${enemyHealth} hit points remaining!`);
             if (enemyHealth <= 0) {
                 window.alert(`${enemyName} crumpled. Congratulations! You have won this battle!`);
@@ -72,7 +82,8 @@ let fight = function(enemyName) {
             };
             
             // same as above but the player is attacked
-            playerHealth -= enemyAttack;
+            let damageToPlayer = randomNumber(enemyAttack - 3, enemyAttack);
+            playerHealth = Math.max(0, playerHealth - damageToPlayer);
             window.alert(`${enemyName} attacked ${playerName}! ${playerName} now has ${playerHealth} hit points remaining!`);
             if (playerHealth <= 0) {
                 window.alert(`${playerName} crumpled. Woe betide, you have lost this battle.`);
@@ -83,7 +94,7 @@ let fight = function(enemyName) {
     else if (promptFight === 'skip') {
         let confirmSkip = window.confirm("Are you sure? If you skip, you'll lose 2 dollars, but you may be better equipped for the next battle.");
         if (confirmSkip) {
-            playerMoney -= 2;
+            playerMoney = Math.max(0, playerMoney - 2);
             window.alert(`You have chosen to skip the fight! After paying the toll, you have ${playerMoney} dollars left.`);
             // no break is needed here. the if statement is finished, which finishes this if block, which finishes the fight() function
             // in other words it goes straight to the next loop
@@ -147,7 +158,7 @@ let startGame = function() {
             window.alert(`Begin Round ${i + 1}!`);
 
             let currentEnemyName = enemyNames[i];
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
             fight(currentEnemyName);
             if (playerHealth > 0 && i < enemyNames.length - 1) {
                 let storeConfirm = window.confirm("The fight is over; visit the store before the next round?");
