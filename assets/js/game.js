@@ -90,54 +90,71 @@ function getPlayerName() {
             window.alert("Please enter a name!");
         };
     };
+
+    return name;
 };
 
-/* END HOIST THESE */
 
+/* ARCHITECTURE */
 
-let fight = function(enemy) {
+let fightOrSkip = function() {
     let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.").toLowerCase();
-    
-    if (promptFight === 'fight') {
-        window.alert(`${enemy.name} enters the ring!`);
 
-        while (enemy.health > 0 && playerInfo.health > 0) {
-            // pick a random number for the damage done to the enemy
-            let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-            // subtract that damage from enemy.health, making sure it doesn't go negative
-            enemy.health = Math.max(0, enemy.health - damageToEnemy);
-            // popup describes what happened
-            window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
-            if (enemy.health <= 0) {
-                window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
-                break;
-            };
-            
-            // same as above but the player is attacked
-            let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
-            playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
-            window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
-            if (playerInfo.health <= 0) {
-                window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
-                break;
-            };
-        };
+    if (promptFight === "" || promptFight === null) {
+        window.alert("You need to select an option.");
+        fightOrSkip();
     }
-    else if (promptFight === 'skip') {
+    else if (promptFight === "fight") {
+        fight();
+    }
+    else if (promptFight === "skip") {
         let confirmSkip = window.confirm("Are you sure? If you skip, you'll lose 2 dollars, but you may be better equipped for the next battle.");
+
         if (confirmSkip) {
             playerInfo.money = Math.max(0, playerInfo.money - 2);
             window.alert(`You have chosen to skip the fight! After paying the toll, you have ${playerInfo.money} dollars left.`);
-            // no break is needed here. the if statement is finished, which finishes this if block, which finishes the fight() function
-            // in other words it goes straight to the next loop
+            return true;
         }
         else {
-            fight();
+            return false;
         };
+        // true/false return is used in fight() to kill the loop if desired
     }
     else {
-        window.alert("You need to choose a valid option. Try again!");
-        fight();
+        window.alert("You need to select a valid option.")
+        fightOrSkip();
+    };
+    // else-if chain is necessary so entering a blank input doesn't call two different error responses
+};
+
+let fight = function(enemy) {
+    window.alert(`${enemy.name} enters the ring!`);
+
+    while (enemy.health > 0 && playerInfo.health > 0) {
+        // kill the loop if the player chose to skip
+        if (fightOrSkip()) {
+            break;
+        };
+
+        // pick a random number for the damage done to the enemy
+        let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        // subtract that damage from enemy.health, making sure it doesn't go negative
+        enemy.health = Math.max(0, enemy.health - damageToEnemy);
+        // popup describes what happened
+        window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
+        if (enemy.health <= 0) {
+            window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+            break;
+        };
+        
+        // same as above but the player is attacked
+        let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
+        playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
+        window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
+        if (playerInfo.health <= 0) {
+            window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
+            break;
+        };
     };
 };
 
@@ -160,6 +177,9 @@ let shop = function() {
             break;
     }
 }
+
+
+/* START AND END */
 
 let startGame = function() {
     window.alert("Welcome to Robot Gladiators!");
