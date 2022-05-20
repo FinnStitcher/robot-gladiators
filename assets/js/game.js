@@ -128,19 +128,21 @@ let fightOrSkip = function() {
 };
 
 let fight = function(enemy) {
-    window.alert(`${enemy.name} enters the ring!`);
-
     while (enemy.health > 0 && playerInfo.health > 0) {
         // kill the loop if the player chose to skip
+
         if (fightOrSkip()) {
             break;
         };
+        
+        window.alert(`${enemy.name} enters the ring!`);
 
         // pick a random number for the damage done to the enemy
-        let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
         // subtract that damage from enemy.health, making sure it doesn't go negative
-        enemy.health = Math.max(0, enemy.health - damageToEnemy);
         // popup describes what happened
+
+        let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        enemy.health = Math.max(0, enemy.health - damageToEnemy);
         window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
         if (enemy.health <= 0) {
             window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
@@ -148,6 +150,7 @@ let fight = function(enemy) {
         };
         
         // same as above but the player is attacked
+
         let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
         playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
         window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
@@ -159,16 +162,17 @@ let fight = function(enemy) {
 };
 
 let shop = function() {
-    let shopOptionPrompt = window.prompt("Would you like to refill your health, upgrade your attack, or leave the store? Type 'refill', 'upgrade', or 'leave' to make your choice.").toLowerCase();
+    let shopOptionPrompt = window.prompt("Enter '1' to refill your health, '2' to upgrade your attack, or '3' to leave the store.");
+    shopOptionPrompt = parseInt(shopOptionPrompt);
 
     switch (shopOptionPrompt) {
-        case "refill":
+        case 1:
             playerInfo.refillHealth();
             break;
-        case "upgrade":
+        case 2:
             playerInfo.upgradeAttack();
             break;
-        case "leave":
+        case 3:
             window.alert("You left the store.");
             break;
         default:
