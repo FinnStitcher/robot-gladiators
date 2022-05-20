@@ -98,27 +98,23 @@ function getPlayerName() {
 /* ARCHITECTURE */
 
 let fightOrSkip = function() {
-    let promptFight = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.").toLowerCase();
+    let promptResponse = window.prompt("Your opponent is getting ready. Type 'fight' to enter the ring, or 'skip' to back off.").toLowerCase();
 
-    if (promptFight === "" || promptFight === null) {
+    if (promptResponse === "" || promptResponse === null) {
         window.alert("You need to select an option.");
         fightOrSkip();
     }
-    else if (promptFight === "fight") {
-        fight();
+    else if (promptResponse === "fight") {
+        return false;
     }
-    else if (promptFight === "skip") {
+    else if (promptResponse === "skip") {
         let confirmSkip = window.confirm("Are you sure? If you skip, you'll lose 2 dollars, but you may be better equipped for the next battle.");
 
         if (confirmSkip) {
             playerInfo.money = Math.max(0, playerInfo.money - 2);
             window.alert(`You have chosen to skip the fight! After paying the toll, you have ${playerInfo.money} dollars left.`);
             return true;
-        }
-        else {
-            return false;
         };
-        // true/false return is used in fight() to kill the loop if desired
     }
     else {
         window.alert("You need to select a valid option.")
@@ -129,12 +125,6 @@ let fightOrSkip = function() {
 
 let fight = function(enemy) {
     while (enemy.health > 0 && playerInfo.health > 0) {
-        // kill the loop if the player chose to skip
-
-        if (fightOrSkip()) {
-            break;
-        };
-        
         window.alert(`${enemy.name} enters the ring!`);
 
         // pick a random number for the damage done to the enemy
@@ -194,7 +184,13 @@ let startGame = function() {
 
             let currentEnemy = enemyInfo[i];
             currentEnemy.health = randomNumber(40, 60);
-            fight(currentEnemy);
+
+            let skipped = fightOrSkip();
+            if (skipped === false) {
+                fight(currentEnemy);
+            };
+            // fightOrSkip returns true if the confirmSkip conditional activates, and false if the fight conditional activates
+            // that boolean is read here to determine whether or not to display the fight dialogues
 
             if (playerInfo.health > 0 && i < enemyInfo.length - 1) {
                 let storeConfirm = window.confirm("The fight is over; visit the store before the next round?");
