@@ -124,30 +124,90 @@ let fightOrSkip = function() {
 };
 
 let fight = function(enemy) {
+    window.alert(`${enemy.name} enters the ring!`);
+    
+    // this decides who goes first in each turn
+    // 1 turn = both fighters attack once
+    let isPlayerTurn = true;
+    if (Math.random() > 0.5) {
+        isPlayerTurn = false;
+    };
+
     while (enemy.health > 0 && playerInfo.health > 0) {
-        window.alert(`${enemy.name} enters the ring!`);
+        // this version works but sometimes one party will attack multiple times in a row
+        // cool behavior, but not what i want right now
 
-        // pick a random number for the damage done to the enemy
-        // subtract that damage from enemy.health, making sure it doesn't go negative
-        // popup describes what happened
+        // let isPlayerTurn = true;
+        // if (Math.random() > 0.5) {
+        //     isPlayerTurn = false;
+        // };
 
-        let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-        enemy.health = Math.max(0, enemy.health - damageToEnemy);
-        window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
-        if (enemy.health <= 0) {
-            window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
-            break;
+        // if (isPlayerTurn) {
+        //     let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        //     enemy.health = Math.max(0, enemy.health - damageToEnemy);
+
+        //     window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
+        //     if (enemy.health <= 0) {
+        //         window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+        //         break;
+        //     };
+            
+        //     isPlayerTurn = !isPlayerTurn;
+        //     debugger;
+        // }
+        // else {
+        //     let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
+        //     playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
+
+        //     window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
+        //     if (playerInfo.health <= 0) {
+        //         window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
+        //         break;
+        //     };
+            
+        //     isPlayerTurn = !isPlayerTurn;
+        //     debugger;
+        // };
+
+        if (isPlayerTurn) {
+            let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            enemy.health = Math.max(0, enemy.health - damageToEnemy);
+
+            window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
+            if (enemy.health <= 0) {
+                window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+                break;
+            };
+            
+            let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
+            playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
+
+            window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
+            if (playerInfo.health <= 0) {
+                window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
+                break;
+            };
+        }
+        else {
+            let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
+            playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
+
+            window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
+            if (playerInfo.health <= 0) {
+                window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
+                break;
+            };
+
+            let damageToEnemy = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+            enemy.health = Math.max(0, enemy.health - damageToEnemy);
+
+            window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
+            if (enemy.health <= 0) {
+                window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+                break;
+            };
         };
-        
-        // same as above but the player is attacked
-
-        let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
-        playerInfo.health = Math.max(0, playerInfo.health - damageToPlayer);
-        window.alert(`${enemy.name} attacked ${playerInfo.name}! ${playerInfo.name} now has ${playerInfo.health} hit points remaining!`);
-        if (playerInfo.health <= 0) {
-            window.alert(`${playerInfo.name} crumpled. Woe betide, you have lost this battle.`);
-            break;
-        };
+        // MAN i want to pull those damage calculation blocks into a separate function
     };
 };
 
