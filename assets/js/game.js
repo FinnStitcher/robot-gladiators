@@ -175,7 +175,9 @@ let fight = function(enemy) {
 
             window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
             if (enemy.health <= 0) {
+                playerInfo.money += 10;
                 window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+                window.alert(`You received ten dollars for your success. You now have ${playerInfo.money}.`);
                 break;
             };
             
@@ -203,7 +205,9 @@ let fight = function(enemy) {
 
             window.alert(`${playerInfo.name} attacked ${enemy.name}! ${enemy.name} now has ${enemy.health} hit points remaining!`);
             if (enemy.health <= 0) {
+                playerInfo.money += 10;
                 window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
+                window.alert(`You received ten dollars for your success. You now have ${playerInfo.money}.`);
                 break;
             };
         };
