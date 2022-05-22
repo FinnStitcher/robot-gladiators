@@ -153,7 +153,6 @@ let fight = function(enemy) {
         //     };
             
         //     isPlayerTurn = !isPlayerTurn;
-        //     debugger;
         // }
         // else {
         //     let damageToPlayer = randomNumber(enemy.attack - 3, enemy.attack);
@@ -166,7 +165,6 @@ let fight = function(enemy) {
         //     };
             
         //     isPlayerTurn = !isPlayerTurn;
-        //     debugger;
         // };
 
         if (isPlayerTurn) {
@@ -177,7 +175,7 @@ let fight = function(enemy) {
             if (enemy.health <= 0) {
                 playerInfo.money += 10;
                 window.alert(`${enemy.name} crumpled. Congratulations! You have won this battle!`);
-                window.alert(`You received ten dollars for your success. You now have ${playerInfo.money}.`);
+                window.alert(`You received 10 dollars for your success. You now have ${playerInfo.money}.`);
                 break;
             };
             
@@ -275,10 +273,25 @@ let startGame = function() {
 
 let endGame = function() {
     if (playerInfo.health > 0) {
-        window.alert(`Great job, you survived Robot Gladiators! Your final score was ${playerInfo.money}.`)
+        window.alert(`Great job, you survived Robot Gladiators! Your final score was ${playerInfo.money}.`);
     }
     else {
-        window.alert(`Game over! You lost your robot in battle. Your final score was ${playerInfo.money}.`)
+        window.alert(`Game over! You lost your robot in battle. Your final score was ${playerInfo.money}.`);
+    };
+
+    let sessionScore = playerInfo.money;
+    let storedScore = localStorage.getItem("highScore");
+
+    if (storedScore === null) {
+        window.alert("Your score has been recorded. You had no previous score stored, which means this is your first high score.");
+        localStorage.setItem("highScore", sessionScore);
+    }
+    else if (sessionScore > storedScore) {
+        window.alert(`That's a new high score! You beat your previous score of ${storedScore} by ${sessionScore - storedScore} points.`);
+        localStorage.setItem("highScore", sessionScore);
+    }
+    else {
+        window.alert(`Unfortunately, you didn't beat your previous high score, which was ${storedScore}.`)
     };
 
     let playAgainConfirm = window.confirm("Would you like to play again?");
